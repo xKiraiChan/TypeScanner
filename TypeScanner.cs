@@ -1,17 +1,22 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
 
 namespace TypeScanner
 {
-    [BepInPlugin(GUID, "TypeScanner", "0.1.0")]
+    [BepInPlugin(GUID, "TypeScanner", "0.2.0")]
     public class TypeScanner : BasePlugin
     {
         public const string GUID = "com.github.xKiraiChan.TypeScanner";
-        public const string TypeDefsPath = "BepInEx/TypeDefs";
 
         internal static ManualLogSource Logger;
+        internal static ConfigFile Configuration;
 
-        public override void Load() => Logger = Log;
+        public override void Load()
+        {
+            Logger = Log;
+            Configuration = Config;
+        }
     }
 }

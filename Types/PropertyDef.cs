@@ -8,7 +8,7 @@ namespace TypeScanner.Types
     {
         public string ID;
         public string Name;
-        public string Type;
+        public Type Type;
 
         internal readonly List<Func<PropertyInfo, bool>> Checks = new();
 
@@ -17,10 +17,12 @@ namespace TypeScanner.Types
             Checks.Clear();
 
             if (Name is not null) Checks.Add(x => x.Name == Name);
-            if (Type is not null)
-                if (System.Type.GetType(Type) is Type t)
-                    Checks.Add(x => x.PropertyType == t);
-                else TypeScanner.Logger.LogWarning($"Failed to resolve type: {Type}");
+            if (Type is not null) Checks.Add(x => x.PropertyType == Type);
         }
+
+        public static PropertyDef Create(string id = null) => new() { ID = id };
+        public PropertyDef WithName(string name) { Name = name; return this; }
+        public PropertyDef WithType<T>() { Type = typeof(T); return this; }
+        public PropertyDef WithType(Type type) { Type = type; return this; }
     }
 }

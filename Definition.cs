@@ -19,24 +19,29 @@ namespace TypeScanner
             {
                 TypeScanner.Logger.LogError($"Failed to setup a ClassDef due to missing ID");
                 return;
-            } 
-            
+            }
+
             TypeScanner.Logger.LogInfo("Definition loaded: " + def.ID);
 
-            if (Cache.Table.TryGetValue(def.ID, out Type t))
+            if (Cache.Mode.Value != Cache.CachingMode.Disabled && Cache.Table.TryGetValue(def.ID, out Type t))
             {
                 Stopwatch sw = new();
                 sw.Start();
 
-                def.Build();
-                if (def.Checks.TrueForAll(x => x(t)))
-                {
-                    def._cached = t;
-                    def._scanned = true;
+                // returning without setting means that the resolved property will cause a scan
+                if (t == null) return;
 
-                    sw.Stop();
-                    TypeScanner.Logger.LogInfo($"Loaded {def.ID} from cache in {sw.ElapsedMilliseconds} ms");
+                if (Cache.Mode.Value == Cache.CachingMode.Standard)
+                {
+                    def.Build();
+                    if (!def.Checks.TrueForAll(x => x(t)))
+                        return;
                 }
+
+                def._cached = t;
+                def._scanned = true;
+                sw.Stop();
+                TypeScanner.Logger.LogInfo($"Loaded {def.ID} from cache in {sw.ElapsedMilliseconds} ms");
             }
 
             Table.Add(def.ID, def);

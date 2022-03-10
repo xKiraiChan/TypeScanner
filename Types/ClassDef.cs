@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TypeScanner.Types
 {
     public class ClassDef
     {
         public string ID;
-        public string Derives;
-        public string Assembly;
-        public Dictionary<string, int> Counts;
+        public Type Derives;
+        public Assembly Assembly;
+        public Dictionary<string, int> Counts = new();
         public MethodDef[] Methods;
         public PropertyDef[] Properties;
 
@@ -21,6 +20,7 @@ namespace TypeScanner.Types
         public Type _cached;
         public bool _scanned;
         public bool _built;
+
         public Type Resolved
         {
             get
@@ -39,8 +39,7 @@ namespace TypeScanner.Types
             if (!_built) Build();
 
             _scanned = true;
-            _cached = System.Reflection.Assembly.Load(Assembly)
-                .GetExportedTypes()
+            _cached = Assembly.GetExportedTypes()
                 .FirstOrDefault(x => Checks.All(f => f(x)));
 
             Cache.Table[ID] = _cached; 
@@ -55,11 +54,7 @@ namespace TypeScanner.Types
             _built = true;
 
             if (Derives is not null)
-            {
-                if (Type.GetType(Derives) is Type t)
-                    Checks.Add(x => x.BaseType == t);
-                else TypeScanner.Logger.LogWarning($"Failed to resolve type: {Derives}");
-            }
+                Checks.Add(x => x.BaseType == Derives);
 
             if (Counts is not null)
             {
@@ -80,5 +75,14 @@ namespace TypeScanner.Types
                     Checks.Add(x => m.Checks.All(c => x.GetProperties().Any(i => c(i))));
                 }
         }
+
+        public static ClassDef Create(string id) => new() { ID = id };
+        public ClassDef FromAssembly(Assembly assembly) { Assembly = assembly; return this; }
+        public ClassDef DerivesFrom<T>() { Derives = typeof(T); return this; }
+        public ClassDef DerivesFrom(Type type) { Derives = type; return this; }
+        public ClassDef ConstructorCount(int count) { Counts["Constructor"] = count; return this; }
+        public ClassDef WithMethods(params MethodDef[] methods) { Methods = methods; return this; }
+        public ClassDef WithProperties(params PropertyDef[] props) { Properties = props; return this; }
+        public ClassDef Setup() { Definition.Setup(this); return this; }
     }
 }

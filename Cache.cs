@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BepInEx.Configuration;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace TypeScanner
     {
         private const string FilePath = "BepInEx/cache/typescanner.dat";
 
+        public static ConfigEntry<CachingMode> Mode = TypeScanner.Configuration.Bind<CachingMode>("Cache", "CachingMode", CachingMode.Standard);
         public static Dictionary<string, Type> Table;
 
         static Cache()
@@ -24,6 +26,12 @@ namespace TypeScanner
         }
 
         public static void Save() => File.WriteAllLines(FilePath, Table.Select(x => $"{x.Key}={x.Value.AssemblyQualifiedName}"));
-    }
 
+        public enum CachingMode
+        {
+            Standard, // check that the cached type is correct, otherwise rescan
+            Aggressive, // don't even check if the cached type is correct, just return it if it is not null
+            Disabled // always scan
+        }
+    }
 }
