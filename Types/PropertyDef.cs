@@ -9,6 +9,7 @@ namespace TypeScanner.Types
         public string ID;
         public string Name;
         public Type Type;
+        public bool Absent;
 
         internal readonly List<Func<PropertyInfo, bool>> Checks = new();
 
@@ -24,5 +25,6 @@ namespace TypeScanner.Types
         public PropertyDef WithName(string name) { Name = name; return this; }
         public PropertyDef WithType<T>() { Type = typeof(T); return this; }
         public PropertyDef WithType(Type type) { Type = type; return this; }
+        public PropertyDef ExpectAbsent() { Absent = true; return this; }
     }
 }

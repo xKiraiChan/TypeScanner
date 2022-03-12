@@ -65,14 +65,14 @@ namespace TypeScanner.Types
                 foreach (var m in Methods)
                 {
                     m.Build();
-                    Checks.Add(x => m.Checks.All(c => x.GetMethods().Any(i => c(i))));
+                    Checks.Add(x => m.Absent ^ x.GetMethods().Any(i => m.Checks.All(c => c(i))));
                 }
 
             if (Properties is not null)
                 foreach (var m in Properties)
                 {
                     m.Build();
-                    Checks.Add(x => m.Checks.All(c => x.GetProperties().Any(i => c(i))));
+                    Checks.Add(x => m.Absent ^ x.GetProperties().Any(i => m.Checks.All(c => c(i))));
                 }
         }
 

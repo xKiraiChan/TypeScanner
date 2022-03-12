@@ -11,6 +11,7 @@ namespace TypeScanner.Types
         public string Name;
         public Type Returns;
         public Type[] Parameters;
+        public bool Absent;
 
         internal readonly List<Func<MethodInfo, bool>> Checks = new();
 
@@ -40,5 +41,6 @@ namespace TypeScanner.Types
         public MethodDef ReturnsType<T>() { Returns = typeof(T); return this; }
         public MethodDef ReturnsType(Type type) { Returns = type; return this; }
         public MethodDef WithParameters(params Type[] parms) { Parameters = parms; return this; }
+        public MethodDef ExpectAbsent() { Absent = true; return this; }
     }
 }
