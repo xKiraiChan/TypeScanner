@@ -58,7 +58,7 @@ namespace TypeScanner.Types
 
             if (Counts is not null)
             {
-                if (Counts["Constructor"] is int cc) Checks.Add(x => x.GetConstructors().Count() == cc);
+                if (Counts.TryGetValue("Constructor", out int cc)) Checks.Add(x => x.GetConstructors().Count() == cc);
             }
 
             if (Methods is not null)
