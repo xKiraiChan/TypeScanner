@@ -17,7 +17,7 @@ namespace TypeScanner
         {
             if (def.ID is null)
             {
-                TypeScanner.Logger.LogError($"Failed to setup a ClassDef due to missing ID");
+                TypeScanner.Logger.LogError("Failed to setup a ClassDef due to missing ID");
                 return;
             }
 
