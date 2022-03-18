@@ -6,6 +6,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove=".git" />
+	  <None Remove=".gitignore" />
+	  <None Remove="README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Reference Include="BepInEx.Core">
 			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat.BepInEx\BepInEx\core\BepInEx.Core.dll</HintPath>
 		</Reference>
