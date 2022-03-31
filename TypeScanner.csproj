@@ -12,12 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="BepInEx.Core">
-			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat.BepInEx\BepInEx\core\BepInEx.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="BepInEx.IL2CPP">
-			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\VRChat.BepInEx\BepInEx\core\BepInEx.IL2CPP.dll</HintPath>
-		</Reference>
+	  <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-be.553" />
 	</ItemGroup>
 
 </Project>
