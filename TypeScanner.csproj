@@ -3,6 +3,9 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<LangVersion>preview</LangVersion>
+		<RestoreAdditionalProjectSources>
+			https://nuget.bepinex.dev/v3/index.json
+		</RestoreAdditionalProjectSources>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,5 +17,11 @@
 	<ItemGroup>
 	  <PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-be.*" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<RepositoryUrl>https://github.com/xKiraiChan/TypeScanner</RepositoryUrl>
+		<PackageVersion>$([System.DateTime]::Now.ToString("0.yyyy.MMdd.HHmm"))</PackageVersion>
+		<AssemblyVersion>$(PackageVersion)</AssemblyVersion>
+	</PropertyGroup>
 
 </Project>
