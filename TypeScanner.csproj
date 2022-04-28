@@ -22,6 +22,8 @@
 		<RepositoryUrl>https://github.com/xKiraiChan/TypeScanner</RepositoryUrl>
 		<PackageVersion>$([System.DateTime]::Now.ToString("0.yyyy.MMdd.HHmm"))</PackageVersion>
 		<AssemblyVersion>$(PackageVersion)</AssemblyVersion>
+		<Authors>xKiraiChan</Authors>
+		<PackageId>xKiraiChan.TypeScanner</PackageId>
 	</PropertyGroup>
 
 </Project>
